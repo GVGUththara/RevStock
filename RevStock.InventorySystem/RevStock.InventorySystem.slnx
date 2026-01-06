@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="ApiGateway/ApiGateway.csproj" Id="a08ea24e-bafb-4c63-a5b9-077a0461e96a" />
+  <Project Path="AuthService/AuthService.csproj" Id="cfc21fbb-46f1-4d43-ad45-597d5b0d10cd" />
+  <Project Path="InventoryService/InventoryService.csproj" />
+  <Project Path="ProcurementService/ProcurementService.csproj" Id="f5814bc9-78fc-46ab-b27e-6b8704dd6b15" />
+  <Project Path="UserService/UserService.csproj" />
+</Solution>
