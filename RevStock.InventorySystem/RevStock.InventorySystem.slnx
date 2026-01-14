@@ -6,5 +6,6 @@
   <Project Path="AuthService/AuthService.csproj" Id="cfc21fbb-46f1-4d43-ad45-597d5b0d10cd" />
   <Project Path="InventoryService/InventoryService.csproj" />
   <Project Path="ProcurementService/ProcurementService.csproj" Id="f5814bc9-78fc-46ab-b27e-6b8704dd6b15" />
+  <Project Path="SalesService/SalesService.csproj" Id="8c73f605-69bd-4504-ba32-b5a5537e4743" />
   <Project Path="UserService/UserService.csproj" />
 </Solution>

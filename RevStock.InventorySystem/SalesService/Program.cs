@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using ProcurementService.Data;
-using ProcurementService.Services.Implementations;
-using ProcurementService.Services.Interfaces;
+using SalesService.Data;
+using SalesService.Services.Implementations;
+using SalesService.Services.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,13 +39,15 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddDbContext<ProcurementDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ProcurementDB")));
+builder.Services.AddDbContext<SalesDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SalesDB")));
 
-builder.Services.AddScoped<ISupplierService, SupplierService>();
-builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
-builder.Services.AddScoped<IPurchaseOrderItemService, PurchaseOrderItemService>();
-builder.Services.AddScoped<IPurchaseOrderReceivingService, PurchaseOrderReceivingService>();
+builder.Services.AddHttpClient<InventoryClient>(c =>
+{
+    c.BaseAddress = new Uri("http://localhost:5022"); // InventoryService
+});
+
+builder.Services.AddScoped<ISalesService, SalesService.Services.Implementations.SalesService>();
 
 var app = builder.Build();
 
