@@ -5,8 +5,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5019
+          "Host": "userservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/users/{everything}",
@@ -21,8 +21,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5019
+          "Host": "userservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/roles/{everything}",
@@ -38,8 +38,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5022
+          "Host": "inventoryservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/inventory/categories/{everything}",
@@ -55,8 +55,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5022
+          "Host": "inventoryservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/inventory/spareparts/{everything}",
@@ -72,8 +72,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5022
+          "Host": "inventoryservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/inventory/stocks/{everything}",
@@ -89,8 +89,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5022
+          "Host": "inventoryservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/inventory/grn/{everything}",
@@ -106,8 +106,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5023
+          "Host": "salesservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/sales/{everything}",
@@ -123,8 +123,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5030
+          "Host": "procurementservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/procurement/purchaseorders/{everything}",
@@ -140,8 +140,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5030
+          "Host": "procurementservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/procurement/purchaseorder-items/{everything}",
@@ -157,8 +157,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5030
+          "Host": "procurementservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/procurement/purchaseorders/receiving/{everything}",
@@ -174,8 +174,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5030
+          "Host": "procurementservice",
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/procurement/suppliers/{everything}",

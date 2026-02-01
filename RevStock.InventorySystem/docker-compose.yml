@@ -1,0 +1,95 @@
+version: "3.9"
+
+networks:
+  revstock-network:
+    driver: bridge
+
+services:
+
+  # -------------------- SQL SERVER --------------------
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: revstock-sqlserver
+    environment:
+      SA_PASSWORD: "YourStrong@Password1"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - revstock-network
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  # -------------------- AUTH SERVICE --------------------
+  authservice:
+    image: authservice:1.0
+    container_name: authservice
+    ports:
+      - "8080:8080"
+    networks:
+      - revstock-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  # -------------------- USER SERVICE --------------------
+  userservice:
+    image: userservice:1.0
+    container_name: userservice
+    ports:
+      - "8081:8080"
+    networks:
+      - revstock-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__UserDB=Server=sqlserver;Database=RevStock_UserDB;User Id=sa;Password=YourStrong@Password1;TrustServerCertificate=True
+
+  # -------------------- INVENTORY SERVICE --------------------
+  inventoryservice:
+    image: inventoryservice:1.0
+    container_name: inventoryservice
+    ports:
+      - "8083:8080"
+    networks:
+      - revstock-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__InventoryDB=Server=sqlserver;Database=RevStock_InventoryDB;User Id=sa;Password=YourStrong@Password1;TrustServerCertificate=True
+
+  # -------------------- PROCUREMENT SERVICE --------------------
+  procurementservice:
+    image: procurementservice:1.0
+    container_name: procurementservice
+    ports:
+      - "8082:8080"
+    networks:
+      - revstock-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__ProcurementDB=Server=sqlserver;Database=RevStock_ProcurementDB;User Id=sa;Password=YourStrong@Password1;TrustServerCertificate=True
+
+  # -------------------- SALES SERVICE --------------------
+  salesservice:
+    image: salesservice:1.0
+    container_name: salesservice
+    ports:
+      - "8084:8080"
+    networks:
+      - revstock-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SalesDB=Server=sqlserver;Database=RevStock_SalesDB;User Id=sa;Password=YourStrong@Password1;TrustServerCertificate=True
+
+  # -------------------- API GATEWAY --------------------
+  apigateway:
+    image: apigateway:1.0
+    container_name: apigateway
+    ports:
+      - "5000:8080"
+    networks:
+      - revstock-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+# -------------------- VOLUMES --------------------
+volumes:
+  sqlserver_data:

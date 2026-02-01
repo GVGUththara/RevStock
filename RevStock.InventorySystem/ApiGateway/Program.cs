@@ -44,6 +44,8 @@ builder.Services.AddOcelot(builder.Configuration);
 
 var app = builder.Build();
 
+app.Urls.Add("http://0.0.0.0:8080");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
