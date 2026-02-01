@@ -1,0 +1,94 @@
+name: RevStock CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    # ---------- BUILD SERVICES ----------
+    - name: Build Auth Service
+      working-directory: AuthService
+      run: |
+        dotnet restore
+        dotnet build -c Release
+
+    - name: Build User Service
+      working-directory: UserService
+      run: |
+        dotnet restore
+        dotnet build -c Release
+
+    - name: Build Inventory Service
+      working-directory: InventoryService
+      run: |
+        dotnet restore
+        dotnet build -c Release
+
+    - name: Build Procurement Service
+      working-directory: ProcurementService
+      run: |
+        dotnet restore
+        dotnet build -c Release
+
+    - name: Build Sales Service
+      working-directory: SalesService
+      run: |
+        dotnet restore
+        dotnet build -c Release
+
+    - name: Build API Gateway
+      working-directory: ApiGateway
+      run: |
+        dotnet restore
+        dotnet build -c Release
+
+    # ---------- DOCKER LOGIN ----------
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # ---------- BUILD & PUSH IMAGES ----------
+    - name: Build & Push Auth Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/revstock-auth:latest ./AuthService
+        docker push ${{ secrets.DOCKER_USERNAME }}/revstock-auth:latest
+
+    - name: Build & Push User Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/revstock-user:latest ./UserService
+        docker push ${{ secrets.DOCKER_USERNAME }}/revstock-user:latest
+
+    - name: Build & Push Inventory Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/revstock-inventory:latest ./InventoryService
+        docker push ${{ secrets.DOCKER_USERNAME }}/revstock-inventory:latest
+
+    - name: Build & Push Procurement Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/revstock-procurement:latest ./ProcurementService
+        docker push ${{ secrets.DOCKER_USERNAME }}/revstock-procurement:latest
+
+    - name: Build & Push Sales Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/revstock-sales:latest ./SalesService
+        docker push ${{ secrets.DOCKER_USERNAME }}/revstock-sales:latest
+
+    - name: Build & Push API Gateway Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/revstock-apigateway:latest ./ApiGateway
+        docker push ${{ secrets.DOCKER_USERNAME }}/revstock-apigateway:latest
