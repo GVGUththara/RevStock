@@ -1,12 +1,16 @@
 name: RevStock CI/CD Pipeline
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
 
 jobs:
-  build-and-push:
+  build-test:
+    name: Build & Test (CI)
     runs-on: ubuntu-latest
 
     steps:
@@ -18,51 +22,34 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    # ---------- BUILD SERVICES ----------
-    - name: Build Auth Service
-      working-directory: AuthService
+    # ---------- RESTORE & BUILD ----------
+    - name: Restore & Build All Services
       run: |
         dotnet restore
-        dotnet build -c Release
+        dotnet build -c Release --no-restore
 
-    - name: Build User Service
-      working-directory: UserService
+    # ---------- RUN TESTS ----------
+    - name: Run Unit Tests
       run: |
-        dotnet restore
-        dotnet build -c Release
+        dotnet test --no-build --verbosity normal
 
-    - name: Build Inventory Service
-      working-directory: InventoryService
-      run: |
-        dotnet restore
-        dotnet build -c Release
 
-    - name: Build Procurement Service
-      working-directory: ProcurementService
-      run: |
-        dotnet restore
-        dotnet build -c Release
+  docker-build-push:
+    name: Docker Build & Push (CD)
+    needs: build-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
 
-    - name: Build Sales Service
-      working-directory: SalesService
-      run: |
-        dotnet restore
-        dotnet build -c Release
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Build API Gateway
-      working-directory: ApiGateway
-      run: |
-        dotnet restore
-        dotnet build -c Release
-
-    # ---------- DOCKER LOGIN ----------
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # ---------- BUILD & PUSH IMAGES ----------
     - name: Build & Push Auth Image
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/revstock-auth:latest ./AuthService
